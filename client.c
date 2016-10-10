@@ -14,6 +14,7 @@ int main()
 	int sockfd, portno, n;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
+	char buffer[256];
 	portno = 450;
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0) {
@@ -35,6 +36,20 @@ int main()
 		perror("ERROR connecting\n");
 		exit(0);
 	}
+	bzero(buffer,256);
+	while (1) {
+		n = read(sockfd,buffer,255);
+		if (n < 0){
+			perror("ERROR reading from socket\n");
+			exit(0);
+		}
+		if (strlen(buffer)==1&&!strcmp(buffer,"N")) {
+			break;
+		}
+		printf("%s",buffer);
+		bzero(buffer,256);
+	}
+	printf("Command complete\n");
 	close(sockfd);
 	return 0;
 }
