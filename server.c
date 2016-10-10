@@ -92,6 +92,13 @@ int main()
 					printf("Finished processing request\n");
 					return 0;
 				}
+			#else
+				printf("Started processing request");
+				pthread_t thread1;
+				int result = pthread_create(&thread1, NULL, compute, &parameter);
+				if (result != 0) {
+					perror("Error creating thread");
+				}
 			#endif
 			}
 		}
